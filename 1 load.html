@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .comment{
+            width: 300px;
+            border: 1px solid #f5f5f5;
+            background: #fafafa;
+            padding: 10px 30px;
+
+        }
+        .para{
+            padding-bottom: 30px;
+            border-bottom: 1px solid #dedede;
+        }
+        .para:last-child{
+            border-bottom: none;
+
+        }
+    </style>
+</head>
+<body>
+<form action="">
+    <label for="uname">姓名：</label>
+    <input type="text" id="uname" name="uname"><br>
+    <label for="content">内容：</label>
+    <textarea name="content" id="content"></textarea><br>
+    <input type="button" value="提交评价" id="send">
+</form>
+<button type="button" id="receive">获取回复</button>
+<div id="recText"></div>
+<div id="loading">loading...</div>
+<script src="../jquery-1.7.1.js"></script>
+<script>
+    $("#receive").click(function () {
+        $("#recText").load("comment.html")
+    });
+    $("#send").click(function () {
+        console.log($("form").serializeArray());
+        //uname=bolala&content=TEST
+        $.post("data/get1.php",
+            $("form").serialize(),
+            function (data) {
+            console.log(data);
+        });
+    });
+    $("#loading").hide().ajaxStart(function () {
+        $(this).show();
+    });
+    $("#loading").ajaxStop(function () {
+        $(this).hide();
+    });
+</script>
+</body>
+</html>

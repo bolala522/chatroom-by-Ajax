@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        .box {
+            width: 800px;
+            height: 300px;
+            border-radius: 10px;
+            padding: 10px;
+            display: flex;
+            flex-flow: column wrap;
+            align-items: center;
+            background: linear-gradient(0deg, #6a6ad4, #8c76ff);
+        }
+        .main{
+            height:65%;
+            width: 85%;
+            border-bottom: 2px solid #f1f1f1;
+            background: #ffffff;
+            padding: 20px;
+
+        }
+        #send{
+            display: block;
+            padding-top:15px;
+            color: white;
+
+        }
+    </style>
+</head>
+<body>
+<div class="box">
+    <div class="main">
+        <p class="loading">加载中...</p>
+           </div>
+    <form action="" id="send">
+        <label for="name">姓名：</label>
+        <input id="name" type="text" name="username">
+        <label for="content">内容：</label>
+        <input id="content" type="text" name="content">
+        <input id="refer" type="button" value="发送">
+    </form>
+</div>
+<script src="../jquery-1.7.1.js"></script>
+<script>
+    let $loding=$(".loading"),
+        $main=$(".main");
+    updateMsg();//初始化
+    $loding.ajaxStart(function () {
+        $(this).show();
+    });
+    $loding.ajaxStop(function () {
+        $(this).hide();
+    });
+$("#refer").click(function () {
+    $.post("data/postMsg.php",
+        $("form").serialize(),
+        function (data) {
+//        处理返回的数据
+            console.log(data);
+            updateMsg();
+            $("#content").val("")
+    })
+});
+function addMsg(data) {
+    $main.empty();
+    let html="";
+//    console.log(data);//json格式
+    data=JSON.parse(data);
+//    console.log(data);//js对象数组格式
+
+    $.each(data,function (i,item) {
+//        console.log(item);//内部每个对象
+        html+=" <strong>"+item.user+":</strong> <span>"+item.msg+"</span><br>"
+    });
+    $main.append(html);//读取数据并显示
+}
+
+function updateMsg() {
+    $.get("data/postMsg.php",function (data) {
+        $(".loading").hide();
+        addMsg(data);//添加数据
+        setTimeout(updateMsg,4000);//4秒刷新一次
+    })
+}
+</script>
+</body>
+</html>

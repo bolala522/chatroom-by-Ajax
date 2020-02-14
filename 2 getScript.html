@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<input type="button" value="获取js" id="getScript">
+<script src="../jquery-1.7.1.js"></script>
+<script>
+    $("#getScript").click(function () {
+        console.log("哈哈");
+        $.getScript("js/get.js");
+    })
+</script>
+</body>
+</html>
